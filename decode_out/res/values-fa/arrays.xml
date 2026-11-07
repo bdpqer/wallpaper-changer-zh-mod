@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="duration_names">
+        <item>دقیقه</item>
+        <item>ساعت</item>
+        <item>روز</item>
+    </string-array>
+    <string-array name="zoom_names">
+        <item>پر کردن</item>
+        <item>اندازه کردن</item>
+        <item>کشیدن</item>
+    </string-array>
+</resources>

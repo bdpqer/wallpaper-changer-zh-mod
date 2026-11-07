@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wallpaper Changer 4.7.4 · 中文本地化修复报告</title>
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#1f2733;--sub:#5b6675;--line:#e6eaf0;--red:#d9483b;--amber:#e08a00;--green:#2f9e57;--blue:#2f6fed;}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 60px;}
+  h1{font-size:24px;margin:0 0 4px;}
+  .meta{color:var(--sub);font-size:13px;margin-bottom:24px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 1px 3px rgba(20,30,50,.04);}
+  h2{font-size:18px;margin:0 0 14px;display:flex;align-items:center;gap:10px;}
+  h2 .n{background:var(--blue);color:#fff;width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none;}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{color:var(--sub);font-weight:600;background:#fafbfd;}
+  code{background:#eef2f8;padding:1px 6px;border-radius:5px;font-size:13px;color:#274472;}
+  .tag{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;font-weight:600;}
+  .t-red{background:#fde8e6;color:var(--red);}
+  .t-amber{background:#fdf1dc;color:var(--amber);}
+  .t-green{background:#e5f6ec;color:var(--green);}
+  .before{color:var(--red);text-decoration:line-through;opacity:.8;}
+  .after{color:var(--green);font-weight:600;}
+  ul{margin:8px 0 0;padding-left:20px;}li{margin:5px 0;}
+  .note{background:#fff8e6;border:1px solid #f3e0a8;border-radius:10px;padding:12px 14px;color:#7a5b00;font-size:13.5px;margin-top:14px;}
+  .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#1f2733;color:#e9eef6;padding:2px 7px;border-radius:5px;font-size:12.5px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Wallpaper Changer v4.7.4 — 中文本地化修复报告</h1>
+  <div class="meta">包名 de.j4velin.wallpaperChanger · 目标 SDK 25 · 修复对象：res/values-zh-*/strings.xml · 2026-10-20</div>
+
+  <div class="card">
+    <h2><span class="n">!</span>问题根因</h2>
+    <p>应用在简体中文（<code>zh-rCN</code>）界面里同时出现了<b>简体、繁体、英文</b>三种文字，并非恶意，而是本地化资源错配：</p>
+    <table>
+      <tr><th style="width:30%">现象</th><th>原因</th></tr>
+      <tr><td><span class="tag t-red">繁体混入简体</span></td><td><code>values-zh-rCN</code> 本应是纯简体，却直接写入了大量繁体词：<span class="before">資料夾 / 相簿 / 購買 / 刪除 / 贊助 / 聯繫 / 圖像 / 錯誤</span> 等，与相邻的简体词并排显示。</td></tr>
+      <tr><td><span class="tag t-amber">英文回退</span></td><td><code>zh-rCN</code> 仅 64 条，而默认英文 <code>values</code> 有 173 条。缺少的键（如 <code>muzei_desc</code>、<code>camera_not_found</code>、<code>create_folder_*</code> 等 33 条）会回退成英文。</td></tr>
+      <tr><td><span class="tag t-amber">繁体不全</span></td><td><code>zh-rHK</code> 仅 39 条，Android 不会自动回退到 <code>zh-rTW</code>，香港用户也会看到英文。</td></tr>
+      <tr><td><span class="tag t-amber">编码 bug</span></td><td><code>please_wait</code> 在 zh-rCN 中写成 <code>稍等一下#8230;</code>，实体未被解码，会原样显示 “#8230;”。</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">✓</span>修复方案</h2>
+    <p>以最完整的繁体文件 <code>values-zh-rTW</code>（121 条，译文准确）为权威源，用 OpenCC 把繁体统一转简体，补齐缺失键的双语译文，再把三个中文资源重写为<b>各自完整、内部一致</b>的版本：</p>
+    <table>
+      <tr><th style="width:22%">文件</th><th style="width:14%">修复后条数</th><th>内容</th></tr>
+      <tr><td><code>values-zh-rCN</code></td><td><span class="tag t-green">149</span></td><td>纯简体， mainland 用词归一（文件夹/设置/图标/应用程序/屏幕/文件/在线），无繁体、无英文回退。</td></tr>
+      <tr><td><code>values-zh-rTW</code></td><td><span class="tag t-green">149</span></td><td>完整繁体，并修正原译文错误（<span class="before">下一個桌布管理器</span> → <span class="after">下一張桌布</span>，<span class="before">選擇桌布管理器</span> → <span class="after">選擇桌布</span>）。</td></tr>
+      <tr><td><code>values-zh-rHK</code></td><td><span class="tag t-green">149</span></td><td>完整繁体，解决香港用户英文回退问题。</td></tr>
+    </table>
+    <ul>
+      <li>新增 33 条此前<b>完全没有中文翻译</b>的键（来自英文默认），如 <code>album_add_explain</code>、<code>camera_not_found</code>、<code>create_folder_*</code>、<code>muzei_desc</code>、<code>rule_permission_warning</code> 等，现已全部翻译成中文。</li>
+      <li>修正 <code>please_wait</code> 的 <code>#8230;</code> 实体错误 → 正确的省略号 “…” 。</li>
+      <li>默认 <code>values</code>（英文）保持不变，作为非中文语言的合法回退。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">▲</span>效果对比（示例）</h2>
+    <table>
+      <tr><th style="width:24%">键</th><th>修复前（zh-rCN）</th><th>修复后（zh-rCN）</th></tr>
+      <tr><td><code>add_folder</code></td><td><span class="before">加入資料夾</span>（繁体混入）</td><td><span class="after">新增文件夹</span></td></tr>
+      <tr><td><code>buy</code></td><td><span class="before">購買</span>（繁体）</td><td><span class="after">购买</span></td></tr>
+      <tr><td><code>delete</code></td><td><span class="before">刪除</span>（繁体）</td><td><span class="after">删除</span></td></tr>
+      <tr><td><code>please_wait</code></td><td><span class="before">稍等一下#8230;</span></td><td><span class="after">请稍候…</span></td></tr>
+      <tr><td><code>camera_not_found</code></td><td><span class="before">No camera app found</span>（英文回退）</td><td><span class="after">未找到相机应用程序</span></td></tr>
+      <tr><td><code>create_folder_success</code></td><td><span class="before">Created new folder</span>（英文回退）</td><td><span class="after">已建立文件夹</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">⚙</span>交付物与安装说明</h2>
+    <ul>
+      <li><b>修补版 APK</b>：<code>Wallpaper Changer_v4.7.4_zh-fixed.apk</code>（已用自签密钥 v1+v2 签名，已通过 <code>apksigner verify</code>）。</li>
+      <li><b>修正后的源资源</b>：<code>decode_out/res/values-zh-rCN|zh-rTW|zh-rHK/strings.xml</code>，可直接二次编译或并入源码。</li>
+      <li><b>生成脚本</b>：<code>generate_strings.py</code>（OpenCC t2s + 手动补译，可复跑）。</li>
+    </ul>
+    <div class="note">
+      <b>⚠ 签名变更提醒：</b>修补版使用新的自签密钥（别名 <span class="kbd">wallpaperfix</span>，密钥库 <span class="kbd">fix.keystore</span>），与原始开发者签名不同。因此<b>不能覆盖安装</b>原版，需先卸载原版再安装此修补版；若你持有原始签名密钥，可用原始密钥重新对 <code>decode_out/</code> 编译产物签名以保留覆盖升级能力。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">✓</span>验证结果</h2>
+    <ul>
+      <li>三份 XML 均通过 well-formed 校验，键集合完全一致（149 键，parity = True）。</li>
+      <li>zh-rCN 繁体字符扫描：<b>0 处残留</b>。</li>
+      <li>成品 APK 资源中简体（如 <code>新增文件夹</code>）与繁体（如 <code>新增資料夾</code>）双语均正确打包，按 locale 精确分发。</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

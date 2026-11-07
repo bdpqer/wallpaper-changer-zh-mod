@@ -1,0 +1,23 @@
+# ===== 敏感凭据（绝不入库）=====
+*.keystore
+*.jks
+*.idsig
+
+# ===== 个人信息（设备序列号 / IP 等，勿外传）=====
+.workbuddy/
+
+# ===== 大型可重新获取的 SDK 工具（本地保留即可，137M）=====
+/build-tools/
+
+# ===== apktool 构建缓存/框架桩（可重新生成，非改动源码）=====
+decode_out/build/
+decode_out/original/
+decode_out/unknown/
+
+# ===== 中间构建产物（可重新生成）=====
+*_unsigned.apk
+_fix_aligned.apk
+_dbg_unsigned.apk
+_dbg.apk
+_fix_dbg.apk
+*_aligned.apk

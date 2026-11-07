@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup android:gravity="center_horizontal" android:orientation="horizontal" android:id="@id/zoom" android:tag="zoom" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RadioButton android:gravity="center" android:id="@id/fill" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableBottom="@drawable/fill" />
+    <RadioButton android:gravity="center" android:id="@id/fit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableBottom="@drawable/fit" />
+    <RadioButton android:gravity="center" android:id="@id/stretch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableBottom="@drawable/stretch" />
+</RadioGroup>

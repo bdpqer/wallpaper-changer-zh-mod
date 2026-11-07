@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:custom="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.Toolbar android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" android:id="@id/toolbar" android:background="?colorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="?actionBarSize" />
+    <ScrollView android:id="@id/scrollView1" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical" android:id="@id/linearLayout1" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <RadioGroup android:id="@id/action" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip">
+                <RadioButton android:id="@id/next" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:text="@string/next_wallpaper" />
+                <RadioButton android:id="@id/select" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/select_wallpaper" />
+                <RadioButton android:id="@id/album" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/next_album" />
+                <RadioButton android:id="@id/switchablum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/switch_album" />
+                <Spinner android:id="@id/albumspinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" />
+                <RadioButton android:id="@id/selectalbum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/select_album" />
+                <RadioButton android:id="@id/opencurrent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/open_current" />
+                <RadioButton android:id="@id/pauserotation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pause_resume_rotation" />
+            </RadioGroup>
+            <LinearLayout android:id="@id/linearLayout2" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <EditText android:id="@id/text1" android:layout_width="0.0dip" android:layout_height="wrap_content" android:hint="Widget text" android:selectAllOnFocus="true" android:layout_weight="1.0" />
+                <de.j4velin.lib.colorpicker.ColorPreviewButton android:layout_gravity="center_vertical" android:id="@id/color1" android:layout_width="20.0dip" android:layout_height="20.0dip" custom:borderColor="#ff000000" />
+            </LinearLayout>
+            <TextView android:textAppearance="?android:textAppearance" android:textSize="16.0sp" android:id="@id/textView4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="Widget icon:" />
+            <LinearLayout android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <ImageView android:id="@id/icon1" android:layout_width="50.0dip" android:layout_height="50.0dip" android:src="@drawable/ic_widget_next" android:contentDescription="icon1" />
+                <ImageView android:id="@id/icon2" android:layout_width="50.0dip" android:layout_height="50.0dip" android:src="@drawable/icon" android:contentDescription="icon2" />
+                <Button android:id="@id/ownicon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:text="@string/own_icon" />
+            </LinearLayout>
+            <Button android:textStyle="bold" android:layout_gravity="center_horizontal" android:id="@id/save" android:paddingLeft="30.0dip" android:paddingRight="30.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/save" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

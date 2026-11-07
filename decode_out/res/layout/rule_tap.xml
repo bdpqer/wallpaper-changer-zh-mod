@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" card_view:cardElevation="4.0dip" card_view:cardUseCompatPadding="true" card_view:contentPadding="5.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    <CheckBox android:layout_gravity="center_vertical" android:id="@id/tap" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/double_tap" />
+</android.support.v7.widget.CardView>

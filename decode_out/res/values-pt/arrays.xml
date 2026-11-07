@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="duration_names">
+        <item>minutos</item>
+        <item>horas</item>
+        <item>dias</item>
+    </string-array>
+    <string-array name="zoom_names">
+        <item>preencher</item>
+        <item>ajustar</item>
+        <item>cortar</item>
+    </string-array>
+</resources>

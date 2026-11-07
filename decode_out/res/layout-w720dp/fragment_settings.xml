@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content" android:requiresFadingEdge="vertical"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:paddingLeft="15.0dip" android:paddingRight="15.0dip" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <android.support.v7.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" card_view:cardElevation="4.0dip" card_view:cardUseCompatPadding="true" card_view:contentPadding="10.0dip">
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:textAppearance="@android:style/TextAppearance.Large" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/zoom_desc" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:text="@string/zoom_summary" />
+                    <RadioGroup android:gravity="center_horizontal" android:orientation="horizontal" android:id="@id/zoom" android:tag="zoom" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                        <RadioButton android:gravity="center" android:id="@id/fill" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableBottom="@drawable/fill" />
+                        <RadioButton android:gravity="center" android:id="@id/fit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableBottom="@drawable/fit" />
+                        <RadioButton android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/stretch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableBottom="@drawable/stretch" />
+                    </RadioGroup>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" card_view:cardElevation="4.0dip" card_view:cardUseCompatPadding="true" card_view:contentPadding="10.0dip">
+                <CheckBox android:textAppearance="@android:style/TextAppearance.Large" android:id="@id/random" android:tag="random" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/random_order" />
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" card_view:cardElevation="4.0dip" card_view:cardUseCompatPadding="true" card_view:contentPadding="10.0dip" xmlns:card_view="http://schemas.android.com/apk/res-auto">
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <CheckBox android:textAppearance="@android:style/TextAppearance.Large" android:id="@id/staticwallpaper" android:tag="staticwallpaper" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/static_mode" />
+                    <CheckBox android:id="@id/staticsystem" android:tag="changeSystem" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Change system wallpaper" />
+                    <CheckBox android:id="@id/staticlock" android:tag="changeLock" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Change lockscreen wallpaper" />
+                    <TextView android:id="@id/static_not_recommended" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/static_mode_explain" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:paddingLeft="15.0dip" android:paddingRight="15.0dip" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <android.support.v7.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" card_view:cardElevation="4.0dip" card_view:cardUseCompatPadding="true" card_view:contentPadding="10.0dip">
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:textAppearance="@android:style/TextAppearance.Large" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/image_size" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:text="@string/zoom_size2" />
+                    <RadioGroup android:orientation="vertical" android:id="@id/size" android:tag="size" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                        <RadioButton android:id="@id/launcher" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                        <RadioButton android:id="@id/display" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </RadioGroup>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" card_view:cardElevation="4.0dip" card_view:cardUseCompatPadding="true" card_view:contentPadding="10.0dip">
+                <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <CheckBox android:textAppearance="@android:style/TextAppearance.Large" android:id="@id/dimTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/darken_wallpaper" android:layout_alignParentTop="true" />
+                    <TextView android:id="@id/dimExplain" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/dim_summary" android:layout_below="@id/dimTitle" />
+                    <TextView android:id="@id/dimPercentage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/dimExplain" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" />
+                    <SeekBar android:id="@id/dim" android:layout_width="wrap_content" android:layout_height="wrap_content" android:max="100" android:layout_toLeftOf="@id/dimPercentage" android:layout_below="@id/dimExplain" android:layout_alignBaseline="@id/dimPercentage" android:layout_alignParentLeft="true" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" card_view:cardElevation="4.0dip" card_view:cardUseCompatPadding="true" card_view:contentPadding="10.0dip">
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <CheckBox android:textAppearance="@android:style/TextAppearance.Large" android:id="@id/autoscan" android:tag="autoRescan" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/auto_rescan" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/automatically_rescan_folders" />
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <EditText android:gravity="center_horizontal" android:id="@id/rescanintervall" android:layout_width="wrap_content" android:layout_height="wrap_content" android:ems="3" android:inputType="number" />
+                        <TextView android:id="@id/hours" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="de.j4velin.wallpaperChanger">
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+    <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
+    <uses-feature android:name="android.hardware.location.network" android:required="false"/>
+    <uses-feature android:name="android.hardware.location" android:required="false"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <application android:allowBackup="true" android:icon="@drawable/icon" android:label="Wallpaper Changer" android:largeHeap="true" android:theme="@style/AppTheme">
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBeBfBNo90X0jOaCCXdSS8qeshFQdMvUeY"/>
+        <activity android:label="Wallpaper Changer" android:name="de.j4velin.wallpaperChanger.settings.Settings" android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="de.j4velin.wallpaperChanger.SETTINGS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+        </activity>
+        <service android:label="Wallpaper Changer" android:name="de.j4velin.wallpaperChanger.LiveWallpaper" android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService"/>
+            </intent-filter>
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/livewallpaper"/>
+        </service>
+        <service android:description="@string/muzei_desc" android:icon="@drawable/muzei" android:label="Wallpaper Changer" android:name="de.j4velin.wallpaperChanger.MuzeiService">
+            <intent-filter>
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
+            </intent-filter>
+            <meta-data android:name="color" android:value="#ff00ff00"/>
+            <meta-data android:name="settingsActivity" android:value=".settings.Settings"/>
+        </service>
+        <receiver android:exported="true" android:name="de.j4velin.wallpaperChanger.receiver.WallpaperController">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="de.j4velin.wallpaperChanger.intent.NEXT"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:exported="true" android:name="de.j4velin.wallpaperChanger.receiver.UpdateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+                <data android:path="de.j4velin.wallpaperChanger" android:scheme="package"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:exported="true" android:name="de.j4velin.wallpaperChanger.receiver.MediaMountedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                <data android:scheme="file"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="de.j4velin.wallpaperChanger.receiver.UnlockReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="com.teslacoilsw.widgetlocker.intent.LOCKED"/>
+            </intent-filter>
+        </receiver>
+        <service android:name="de.j4velin.wallpaperChanger.WallpaperService"/>
+        <activity android:label="@string/add_folder" android:name="de.j4velin.wallpaperChanger.settings.AddFolder" android:parentActivityName="de.j4velin.wallpaperChanger.settings.Settings"/>
+        <activity android:name="net.rdrei.android.dirchooser.DirectoryChooserActivity" android:theme="@style/AppTheme.Dialog"/>
+        <activity android:label="@string/wallpapers" android:name="de.j4velin.wallpaperChanger.settings.Wallpapers" android:parentActivityName="de.j4velin.wallpaperChanger.settings.Settings"/>
+        <activity android:name="de.j4velin.wallpaperChanger.settings.SingleImage" android:parentActivityName="de.j4velin.wallpaperChanger.settings.Settings" android:theme="@style/AppTheme.Fullscreen"/>
+        <activity android:label="@string/add_rule" android:name="de.j4velin.wallpaperChanger.settings.AddRule" android:parentActivityName="de.j4velin.wallpaperChanger.settings.Settings"/>
+        <activity android:label="Location" android:name="de.j4velin.wallpaperChanger.settings.Map" android:parentActivityName="de.j4velin.wallpaperChanger.settings.AddRule"/>
+        <activity android:excludeFromRecents="true" android:name="de.j4velin.wallpaperChanger.ShareWithActivity" android:taskAffinity="" android:theme="@style/AppTheme.Dialog">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+        </activity>
+        <activity android:excludeFromRecents="true" android:name="de.j4velin.wallpaperChanger.widget.OpenCurrentImage" android:taskAffinity=""/>
+        <service android:name="de.j4velin.wallpaperChanger.widget.AlbumChangeService"/>
+        <activity android:excludeFromRecents="true" android:name="de.j4velin.wallpaperChanger.widget.WallpaperSwitchActivity" android:taskAffinity="" android:theme="@style/AppTheme.Dialog"/>
+        <activity android:excludeFromRecents="true" android:name="de.j4velin.wallpaperChanger.widget.AlbumSwitchActivity" android:taskAffinity="" android:theme="@style/AppTheme.Dialog"/>
+        <activity android:excludeFromRecents="true" android:label="@string/widget_configuration" android:name="de.j4velin.wallpaperChanger.widget.WidgetConfig" android:taskAffinity="" android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+        <receiver android:label="Wallpaper Changer" android:name="de.j4velin.wallpaperChanger.widget.Widget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget"/>
+        </receiver>
+        <activity android:excludeFromRecents="true" android:label="Wallpaper Changer Shortcut" android:name="de.j4velin.wallpaperChanger.widget.Shortcut" android:taskAffinity="" android:theme="@style/AppTheme.Dialog">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <receiver android:name="de.j4velin.wallpaperChanger.receiver.RuleReceiver"/>
+        <service android:exported="false" android:name="de.j4velin.wallpaperChanger.util.GeofenceUpdateService"/>
+        <service android:exported="false" android:name="de.j4velin.wallpaperChanger.util.GeoFenceService"/>
+        <service android:exported="true" android:label="LiveWallpaperSource" android:name="com.actionlauncher.api.LiveWallpaperSource">
+            <intent-filter>
+                <action android:name="com.actionlauncher.api.action.LiveWallpaperSource"/>
+            </intent-filter>
+        </service>
+        <service android:icon="@drawable/ic_next" android:label="@string/next_wallpaper" android:name="de.j4velin.wallpaperChanger.widget.QSTileService" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+            <meta-data android:name="android.service.quicksettings.ACTIVE_TILE" android:value="true"/>
+        </service>
+        <provider android:authorities="de.j4velin.wallpaperChanger.provider" android:exported="false" android:grantUriPermissions="true" android:name="android.support.v4.content.FileProvider">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths"/>
+        </provider>
+        <service android:exported="false" android:name="de.j4velin.wallpaperChanger.ScreenOffService"/>
+        <activity android:hardwareAccelerated="false" android:name="de.j4velin.lib.colorpicker.ExtractFromPhoto" android:theme="@style/LibTheme.Dialog"/>
+        <activity android:name="de.j4velin.picturechooser.Main" android:theme="@style/LibTheme.PictureChooser"/>
+        <activity android:exported="false" android:name="com.google.android.gms.common.api.GoogleApiActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+    </application>
+</manifest>

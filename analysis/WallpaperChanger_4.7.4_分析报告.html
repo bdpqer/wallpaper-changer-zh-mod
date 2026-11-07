@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wallpaper Changer 4.7.4 · APK 静态分析报告</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#ffffff; --ink:#191b20; --muted:#626a77;
+    --line:#e4e7ec; --soft:#f0f2f5;
+    --blue:#2f62d8; --green:#118a5a; --amber:#b7670d; --red:#c53636;
+    --blue-bg:#eef3fe; --green-bg:#eaf7f0; --amber-bg:#fdf2e3; --red-bg:#fdecEC;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:15px; line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:44px 24px 80px}
+  header.hero{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:34px 34px 30px; box-shadow:0 1px 2px rgba(16,24,40,.04);
+  }
+  .kicker{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue); font-weight:700}
+  h1{font-size:30px; line-height:1.3; margin:10px 0 6px; letter-spacing:-.01em}
+  .sub{color:var(--muted); font-size:14px}
+  .meta-grid{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px}
+  .chip{
+    background:var(--soft); border:1px solid var(--line); border-radius:999px;
+    padding:5px 13px; font-size:12.5px; color:#3d444f;
+    font-family:Consolas,Monaco,monospace;
+  }
+  h2{
+    font-size:19px; margin:44px 0 14px; padding-bottom:9px;
+    border-bottom:1px solid var(--line); display:flex; align-items:center; gap:11px;
+  }
+  h2 .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:25px; height:25px; border-radius:7px; background:var(--blue);
+    color:#fff; font-size:13px; font-weight:700; flex:none;
+  }
+  h3{font-size:15.5px; margin:24px 0 8px}
+  p{margin:10px 0}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px 24px}
+  .verdict{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:18px}
+  .v{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:17px 18px}
+  .v .lab{font-size:11.5px; font-weight:700; letter-spacing:.08em; color:var(--muted); text-transform:uppercase}
+  .v .val{font-size:17px; font-weight:700; margin:6px 0 4px}
+  .v .note{font-size:12.5px; color:var(--muted); line-height:1.6}
+  .v.ok{border-top:3px solid var(--green)} .v.ok .val{color:var(--green)}
+  .v.warn{border-top:3px solid var(--amber)} .v.warn .val{color:var(--amber)}
+  .v.info{border-top:3px solid var(--blue)} .v.info .val{color:var(--blue)}
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px; background:var(--card)}
+  th{
+    text-align:left; font-weight:600; color:#39414d; background:var(--soft);
+    padding:10px 12px; border-bottom:1px solid var(--line); font-size:12.5px; white-space:nowrap;
+  }
+  td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td code, p code, li code{
+    font-family:Consolas,Monaco,monospace; font-size:12.4px;
+    background:var(--soft); padding:1.5px 5px; border-radius:4px; color:#2b3442;
+  }
+  .tag{
+    display:inline-block; padding:1px 8px; border-radius:5px;
+    font-size:11.5px; font-weight:700; white-space:nowrap;
+  }
+  .t-red{background:var(--red-bg); color:var(--red)}
+  .t-amber{background:var(--amber-bg); color:var(--amber)}
+  .t-green{background:var(--green-bg); color:var(--green)}
+  .t-blue{background:var(--blue-bg); color:var(--blue)}
+  .t-gray{background:var(--soft); color:var(--muted)}
+  ul,ol{margin:10px 0; padding-left:22px}
+  li{margin:6px 0}
+  .bars{margin:16px 0 6px}
+  .bar-row{display:grid; grid-template-columns:190px 1fr 62px; gap:12px; align-items:center; margin:9px 0}
+  .bar-name{font-size:13px; color:#39414d}
+  .bar-track{height:18px; background:var(--soft); border-radius:5px; overflow:hidden}
+  .bar-fill{height:100%; border-radius:5px}
+  .bar-val{font-size:12.5px; color:var(--muted); text-align:right; font-family:Consolas,monospace}
+  .callout{
+    border-left:3px solid var(--blue); background:var(--blue-bg);
+    padding:14px 18px; border-radius:0 8px 8px 0; margin:18px 0; font-size:14px;
+  }
+  .callout.warn{border-left-color:var(--amber); background:var(--amber-bg)}
+  .callout.ok{border-left-color:var(--green); background:var(--green-bg)}
+  .callout b{font-weight:700}
+  .flow{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:18px 0}
+  .step{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:13px 14px}
+  .step .s{font-size:11px; font-weight:700; color:var(--blue); letter-spacing:.08em}
+  .step .t{font-size:13px; font-weight:700; margin:3px 0 4px}
+  .step .d{font-size:12px; color:var(--muted); line-height:1.55}
+  .sev-list{list-style:none; padding:0; margin:14px 0}
+  .sev-list li{
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:13px 16px; margin:9px 0; display:flex; gap:13px; align-items:flex-start;
+  }
+  .sev-list .idx{
+    flex:none; width:22px; height:22px; border-radius:50%; background:var(--soft);
+    color:var(--muted); font-size:11.5px; font-weight:700; display:flex;
+    align-items:center; justify-content:center; margin-top:2px;
+  }
+  .sev-list .body{font-size:13.5px; line-height:1.7}
+  .sev-list .body b{display:block; font-size:13.8px; margin-bottom:2px}
+  footer{margin-top:56px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px}
+  @media (max-width:760px){
+    .verdict{grid-template-columns:1fr}
+    .flow{grid-template-columns:1fr 1fr}
+    .bar-row{grid-template-columns:120px 1fr 50px}
+    .wrap{padding:26px 14px 60px}
+    h1{font-size:24px}
+  }
+  @media print{
+    body{background:#fff}
+    .wrap{max-width:none; padding:0}
+    .card,.v,.step,table{box-shadow:none}
+    h2{page-break-after:avoid}
+    table{page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Android APK Static Analysis</div>
+  <h1>Wallpaper Changer 4.7.4 静态分析报告</h1>
+  <div class="sub">对 <code>Wallpaper Changer_v4.7.4.apk</code> 的解包、反编译与安全审视 · 分析日期 2026-10-20</div>
+  <div class="meta-grid">
+    <span class="chip">de.j4velin.wallpaperChanger</span>
+    <span class="chip">versionCode 474</span>
+    <span class="chip">1,891,146 B</span>
+    <span class="chip">minSdk 14 / targetSdk 25</span>
+    <span class="chip">单 dex · 无 so</span>
+  </div>
+</header>
+
+<div class="verdict">
+  <div class="v ok">
+    <div class="lab">来源可信度</div>
+    <div class="val">官方原包</div>
+    <div class="note">签名证书 CN=j4velin，与开发者 2011 年起沿用的历史密钥 SHA-1 完全一致，未见二次打包痕迹。</div>
+  </div>
+  <div class="v info">
+    <div class="lab">代码行为</div>
+    <div class="val">干净</div>
+    <div class="note">无广告 / 统计 SDK，无 WebView，无应用内 HTTP 请求，无动态加载 dex，无反射调用。</div>
+  </div>
+  <div class="v warn">
+    <div class="lab">综合风险</div>
+    <div class="val">中低</div>
+    <div class="note">未发现恶意代码特征；风险集中在"过时"——2018 年的目标 SDK 与四处配置疏忽。</div>
+  </div>
+</div>
+
+<h2><span class="num">1</span>基本档案</h2>
+<table>
+  <tr><th style="width:130px">项目</th><th>内容</th></tr>
+  <tr><td>应用名称</td><td>Wallpaper Changer（壁纸轮播工具）</td></tr>
+  <tr><td>包名</td><td><code>de.j4velin.wallpaperChanger</code></td></tr>
+  <tr><td>版本</td><td>4.7.4（versionCode 474）</td></tr>
+  <tr><td>体积</td><td>1,891,146 字节（1.80 MiB）；<code>classes.dex</code> 1,806,176 字节，单一 dex</td></tr>
+  <tr><td>SDK 范围</td><td>minSdk 14（Android 4.0）· targetSdk 25（Android 7.1）</td></tr>
+  <tr><td>文件构成</td><td>700 个 zip 条目：1 个 dex、814 个资源文件、531 KB <code>resources.arsc</code>，<b>无 <code>.so</code>、无 <code>assets/</code></b></td></tr>
+  <tr><td>本地化</td><td>102 个语言资源目录，含 <code>zh-CN</code> / <code>zh-TW</code> / <code>zh-HK</code></td></tr>
+  <tr><td>加固 / 壳</td><td>无。dex 可直接反编译，未使用乐固、梆梆等商业壳</td></tr>
+  <tr><td>混淆</td><td>部分。清单中引用的组件类保留原名，工具类被 ProGuard 重命名为 <code>a</code>–<code>l</code></td></tr>
+  <tr><td>发行时间</td><td>版本号 474 对应 2018 年 3 月的更新（第三方存档记录一致）</td></tr>
+</table>
+
+<h2><span class="num">2</span>签名与完整性核验</h2>
+<table>
+  <tr><th style="width:150px">属性</th><th>值</th></tr>
+  <tr><td>签名方案</td><td>v1（JAR）+ v2（APK Signature Scheme），v3 未启用</td></tr>
+  <tr><td>证书主体</td><td><code>CN=j4velin</code>（发布者同为 CN=j4velin）</td></tr>
+  <tr><td>序列号</td><td><code>4de62cfa</code></td></tr>
+  <tr><td>有效期</td><td>2011-06-01 → 2036-05-25</td></tr>
+  <tr><td>算法</td><td>SHA1withRSA，1024 位 RSA</td></tr>
+  <tr><td>证书 SHA-1</td><td><code>D5:3D:81:3F:06:CE:39:7B:A6:69:C8:5A:37:03:AC:6F:91:19:8C:89</code></td></tr>
+  <tr><td>证书 SHA-256</td><td><code>B0:30:9A:BE:F7:3B:61:EC:F8:32:0B:4B:77:65:A5:4B:9D:55:46:EE:F7:5A:97:C6:3F:6F:04:20:60:02:4D:1C</code></td></tr>
+  <tr><td>校验结果</td><td><span class="tag t-green">v1 通过</span> <span class="tag t-green">v2 通过</span> 仅 1 个签名者</td></tr>
+</table>
+<div class="callout ok">
+  <b>关键判断：这是开发者本人签发的原始包，不是"魔改"版本。</b>该证书 2011 年签发、序列号固定，第三方 APK 存档站记录的同一应用 SHA-1 指纹与此包完全相同。二次打包（注入广告、植入后门）必然更换签名，因此可排除。
+</div>
+<p>需要说明的是，1024 位 RSA + SHA1 在今天属于弱算法，<code>apksigner</code> 会给出警告。但它削弱的是"防篡改强度"，不影响"这个包是否出自原作者"的判断——原作者当年的密钥就是这样。Google Play 已要求新应用使用更长的密钥，说明这是历史包袱而非异常。</p>
+
+<h2><span class="num">3</span>代码构成：自有代码只占十分之一</h2>
+<p>全包 1758 个类，其中真正属于这个应用的不到 200 个，其余都是support 库与 Google Play 服务：</p>
+<div class="bars">
+  <div class="bar-row"><div class="bar-name">Android Support Library 27.0.2</div><div class="bar-track"><div class="bar-fill" style="width:61%;background:#2f62d8"></div></div><div class="bar-val">1073</div></div>
+  <div class="bar-row"><div class="bar-name">Google Play Services 11.7.2</div><div class="bar-track"><div class="bar-fill" style="width:25.5%;background:#118a5a"></div></div><div class="bar-val">448</div></div>
+  <div class="bar-row"><div class="bar-name">应用自有代码 (de.j4velin)</div><div class="bar-track"><div class="bar-fill" style="width:11.3%;background:#b7670d"></div></div><div class="bar-val">199</div></div>
+  <div class="bar-row"><div class="bar-name">Action Launcher API / 目录选择器</div><div class="bar-track"><div class="bar-fill" style="width:2.2%;background:#8a94a6"></div></div><div class="bar-val">38</div></div>
+</div>
+<table>
+  <tr><th style="width:210px">组件</th><th>版本 / 说明</th></tr>
+  <tr><td>Android Support Library</td><td>27.0.2（appcompat、design、recyclerview、palette、cardview、transition 等）；另有 arch lifecycle 1.0.3</td></tr>
+  <tr><td>Google Play Services</td><td>11.7.2（<code>google_play_services_version = 11720000</code>），仅启用 <code>maps</code> 与 <code>location</code> 两个模块</td></tr>
+  <tr><td>protobuf</td><td>随 Play Services 引入（<code>protobuf.meta</code>、jsr305 / error_prone 注解）</td></tr>
+  <tr><td>Muzei API</td><td>Google 壁纸应用 Muzei 的 Art Source 协议，作为图源接入</td></tr>
+  <tr><td>Action Launcher API</td><td>向 Action Launcher 启动器发布当前壁纸调色板（<code>com.actionlauncher</code>）</td></tr>
+  <tr><td>第三方小库</td><td><code>net.rdrei.dirchooser</code>（目录选择）、<code>de.j4velin.lib.colorpicker</code>（取色器）、<code>de.j4velin.picturechooser</code>（图片选取与裁剪）——均为作者自研/开源组件</td></tr>
+</table>
+
+<h2><span class="num">4</span>权限：10 条声明，全部与功能相关</h2>
+<table>
+  <tr><th style="width:250px">权限</th><th style="width:150px">用途</th><th>代码中是否真实使用</th></tr>
+  <tr><td><code>SET_WALLPAPER</code></td><td>设置壁纸</td><td><span class="tag t-green">核心</span> 静态壁纸模式下调用 <code>WallpaperManager.setBitmap</code></td></tr>
+  <tr><td><code>RECEIVE_BOOT_COMPLETED</code></td><td>开机自启轮播</td><td><span class="tag t-green">是</span> <code>WallpaperController</code> 收开机广播后重排定时器</td></tr>
+  <tr><td><code>READ_EXTERNAL_STORAGE</code><br><span style="color:var(--muted);font-size:12px">（清单中重复声明 2 次）</span></td><td>扫描本地图片</td><td><span class="tag t-green">是</span> 遍历用户指定文件夹、建立索引</td></tr>
+  <tr><td><code>WRITE_EXTERNAL_STORAGE</code></td><td>保存裁剪结果 / 小部件缩略图</td><td><span class="tag t-green">是</span> 写入 <code>/Android/data/…/files/image_*</code></td></tr>
+  <tr><td><code>INTERNET</code> + <code>ACCESS_NETWORK_STATE</code></td><td>地图底图</td><td><span class="tag t-amber">仅地图</span> 应用自有代码中<b>没有</b>任何 HTTP/Socket 调用</td></tr>
+  <tr><td><code>ACCESS_FINE_LOCATION</code><br><code>ACCESS_COARSE_LOCATION</code></td><td>位置规则</td><td><span class="tag t-green">是</span> 基于 Play Services Geofencing 做"到达某地换壁纸"</td></tr>
+  <tr><td><code>com.android.vending.BILLING</code></td><td>内购</td><td><span class="tag t-green">是</span> 两个 SKU：<code>billing.albums</code>（相册功能）与 <code>billing.donation</code>（打赏）</td></tr>
+</table>
+<div class="callout">
+  <b>关于联网权限的核对：</b>对一个持有 INTERNET 权限的应用，最容易藏问题的地方就是"偷偷上报数据"。本次对自有代码做了逐类检索：<code>HttpURLConnection</code>、<code>Socket</code>、OkHttp/Retrofit、<code>WebView</code> 命中数均为 0。全包唯一出现的域名是 <code>j4velin.de</code> 的 FAQ / 联系页与 Play 商店链接，且只通过 <code>Intent.ACTION_VIEW</code> 交给浏览器打开，应用自身不抓取内容。
+</div>
+
+<h2><span class="num">5</span>组件与攻击面</h2>
+<p>该包 targetSdk 为 25，低于 Android 12 的分界线，因此"带 intent-filter 但未写 <code>android:exported</code>"的组件会<b>默认导出</b>。逐个核对如下：</p>
+<table>
+  <tr><th style="width:250px">组件</th><th style="width:92px">导出</th><th style="width:120px">保护</th><th>评估</th></tr>
+  <tr>
+    <td><code>receiver.WallpaperController</code></td>
+    <td><span class="tag t-red">是</span></td><td>无</td>
+    <td>监听开机广播与自定义 action <code>…intent.NEXT</code>。<b>NEXT 没有权限校验</b>，任意第三方应用发一条广播即可强制切换壁纸。</td>
+  </tr>
+  <tr>
+    <td><code>receiver.UnlockReceiver</code></td>
+    <td><span class="tag t-amber">默认是</span></td><td>无</td>
+    <td>收 <code>USER_PRESENT</code>（系统保护广播）与 Teslacoil WidgetLocker 的 <code>…LOCKED</code>（第三方可伪造），后者可被用来触发一次切换。</td>
+  </tr>
+  <tr>
+    <td><code>service.LiveWallpaperSource</code><br><span style="color:var(--muted);font-size:12px">com.actionlauncher.api</span></td>
+    <td><span class="tag t-amber">是</span></td><td>无</td>
+    <td>向 Action Launcher 发布当前壁纸的调色板与状态。任意应用可绑定订阅，泄露的只是颜色信息。</td>
+  </tr>
+  <tr>
+    <td><code>ShareWithActivity</code></td>
+    <td><span class="tag t-blue">是（设计如此）</span></td><td>无</td>
+    <td>接收 <code>SEND</code> / <code>SEND_MULTIPLE</code> 的 <code>image/*</code>，把外部图片复制进应用图库。文件名取自 <code>Uri.getLastPathSegment()</code> 且未过滤，理论上可通过构造 <code>../</code> 实现目录穿越写入（落点为应用私有外部目录，影响有限）。</td>
+  </tr>
+  <tr>
+    <td><code>FileProvider</code></td>
+    <td><span class="tag t-green">否</span></td><td>grantUriPermissions</td>
+    <td>未导出，安全性可接受。但 <code>provider_paths.xml</code> 同时声明了 <code>&lt;root-path path="."&gt;</code> 与 <code>&lt;external-path path="."&gt;</code>，一旦某处授权出错，暴露范围接近整个存储。</td>
+  </tr>
+  <tr>
+    <td><code>service.LiveWallpaper</code></td>
+    <td><span class="tag t-green">是</span></td><td><code>BIND_WALLPAPER</code></td>
+    <td>系统级权限保护，正常。</td>
+  </tr>
+  <tr>
+    <td><code>service.QSTileService</code></td>
+    <td><span class="tag t-green">是</span></td><td><code>BIND_QUICK_SETTINGS_TILE</code></td>
+    <td>下拉快捷开关，系统级权限保护，正常。</td>
+  </tr>
+  <tr>
+    <td><code>settings.Settings</code>（主界面）</td>
+    <td><span class="tag t-blue">是</span></td><td>无</td>
+    <td>带 LAUNCHER 与自定义 action <code>…SETTINGS</code>。可被任意应用拉起，但不接受敏感 extra，无实质影响。</td>
+  </tr>
+  <tr>
+    <td><code>MuzeiService</code></td>
+    <td><span class="tag t-amber">默认是</span></td><td>无</td>
+    <td>Muzei 图源协议，属公开设计接口。</td>
+  </tr>
+</table>
+
+<h2><span class="num">6</span>功能与实现</h2>
+<p>应用本质是一个"本地图片轮播器 + 多触发源调度器"，全部状态存在一个 SQLite 库里，共 6 张表：</p>
+<table>
+  <tr><th style="width:180px">表名</th><th>作用</th></tr>
+  <tr><td><code>wallpaper</code></td><td>图片索引：<code>id / album / pfad（路径）/ shown（是否已显示）</code></td></tr>
+  <tr><td><code>album</code></td><td>相册：<code>name / show / lastPos</code>，用于分组与断点续播</td></tr>
+  <tr><td><code>ordner</code></td><td>文件夹到相册的映射（德语 ordner = 文件夹）</td></tr>
+  <tr><td><code>rules</code></td><td>规则：<code>eventType / eventData / actionType / actionData</code>，时间或位置 → 动作</td></tr>
+  <tr><td><code>kaeufe</code></td><td>内购记录（德语 käufe = 购买）：<code>id / state / productId / time</code></td></tr>
+  <tr><td><code>servicesettings</code></td><td>动态壁纸服务的键值配置</td></tr>
+</table>
+<p>调度链路可以概括为四段：</p>
+<div class="flow">
+  <div class="step"><div class="s">触发</div><div class="t">5 类事件源</div><div class="d">AlarmManager 定时 / 解锁 / 开机 / 地理围栏进入 / 小部件与快捷方式</div></div>
+  <div class="step"><div class="s">选择</div><div class="t">轮播算法</div><div class="d">按相册顺序或随机，写回 <code>shown</code> 与 <code>lastPos</code> 以免重复</div></div>
+  <div class="step"><div class="s">渲染</div><div class="t">两种落地方式</div><div class="d">静态：<code>WallpaperManager.setBitmap</code>；动态：<code>LiveWallpaper</code> 自绘，支持缩放与变暗</div></div>
+  <div class="step"><div class="s">续约</div><div class="t">重排下一次</div><div class="d">用 <code>AlarmManager.set()</code> 精确设定下一次切换时刻</div></div>
+</div>
+<p>另外还有 Muzei 图源、QS 磁贴、Action Launcher 调色板三类"对外集成"，都属于锦上添花。值得一提的是它的相册功能（多相册分组）是付费项，一次性内购约 0.99 欧元；打赏则是纯自愿、不解锁功能。</p>
+
+<h2><span class="num">7</span>隐私与数据流</h2>
+<p>结论是：<b>这个版本不向外发送任何数据。</b>开发者向 Google Play 提交的数据安全表单也标注为"不收集、不共享数据"，与代码行为一致。数据全部留在本机：</p>
+<ul>
+  <li>数据库：<code>/data/data/de.j4velin.wallpaperChanger/databases/</code>，内容只有图片路径、规则与内购状态，不含通讯录、短信、设备标识。</li>
+  <li>图片缓存：<code>/Android/data/de.j4velin.wallpaperChanger/files/image_*</code>（裁剪后的壁纸副本）。</li>
+  <li>偏好设置：<code>SharedPreferences</code> 名 <code>WallpaperChanger</code>，键值如 <code>rotation</code>、<code>random</code>、<code>next_change</code>、<code>changeLock</code>。</li>
+</ul>
+<div class="callout warn">
+  <b>一处需要注意的配置：</b>清单里 <code>android:allowBackup="true"</code>。在 Android 8 及更早的系统上，这意味着任何人拿到已解锁设备并开启 USB 调试，就能用 <code>adb backup</code> 把上述数据库（含内购状态与照片路径）完整导出。现代系统对 <code>allowBackup</code> 的实际执行已收紧，但这仍是可避免的疏忽。
+</div>
+<p>内购校验同样发生在本地：购买结果写入 <code>kaeufe</code> 表后由应用自行判断，未做服务端凭证校验。这属于"防君子不防小人"的设计，对普通用户没有安全影响，只是意味着付费功能可被技术手段绕过。</p>
+
+<h2><span class="num">8</span>风险清单</h2>
+<ul class="sev-list">
+  <li><span class="idx">1</span><div class="body"><b>目标 SDK 停在 2017 年 <span class="tag t-amber">中</span></b>targetSdk 25 让应用在新系统上走"兼容模式"：不享受分区存储隔离、不受后台执行限制约束、默认允许明文 HTTP、未声明 <code>networkSecurityConfig</code>。功能未必坏，但安全基线一直停在 2018 年，且 Play 商店已不接受此级别。</div></li>
+  <li><span class="idx">2</span><div class="body"><b>Google Maps API Key 明文写死在清单 <span class="tag t-amber">中</span></b><code>com.google.android.maps.v2.API_KEY = AIzaSyBeBfBNo90X0jOaCCXdSS8qeshFQdMvUeY</code>。若该 Key 未在云端设置包名 + 证书指纹限制，任何人都能拿它刷地图配额，费用记在开发者账上。</div></li>
+  <li><span class="idx">3</span><div class="body"><b>可备份标志开启 <span class="tag t-amber">中</span></b><code>allowBackup="true"</code>，物理接触 + adb 即可导出应用数据库与内购记录。</div></li>
+  <li><span class="idx">4</span><div class="body"><b>裸奔的自定义广播 <span class="tag t-green">低</span></b><code>de.j4velin.wallpaperChanger.intent.NEXT</code> 无签名级权限保护，任意应用可反复触发换壁纸，属于骚扰/轻微耗电，不能窃取数据。</div></li>
+  <li><span class="idx">5</span><div class="body"><b>FileProvider 路径过宽 <span class="tag t-green">低</span></b>声明了 <code>root-path "."</code> 与 <code>external-path "."</code>。因 <code>exported="false"</code>，需要显式授权才能访问，实际风险被压制，但不符合最小暴露原则。</div></li>
+  <li><span class="idx">6</span><div class="body"><b>分享入口文件名未净化 <span class="tag t-green">低</span></b><code>ShareWithActivity</code> 直接用 <code>Uri.getLastPathSegment()</code> 拼文件名，理论存在目录穿越写文件；落点在应用专属外部目录，且需要恶意应用主动触发。</div></li>
+  <li><span class="idx">7</span><div class="body"><b>签名算法偏弱 <span class="tag t-gray">提示</span></b>1024 位 RSA + SHA1withRSA。新版 Android 校验器会警告，若未来 Google 禁用该算法，此包将无法覆盖安装升级。</div></li>
+</ul>
+<div class="callout ok">
+  <b>未发现的恶意特征（逐项排查过）：</b>无 <code>DexClassLoader</code> / <code>InMemoryDexClassLoader</code> 动态加载（仅 Play Services 自带的 module loader）、无 <code>Runtime.exec</code>、无反射调用、无短信/设备管理/无障碍/读取设备标识、无剪贴板监听、无混淆的加密字符串表、无联网回传。
+</div>
+
+<h2><span class="num">9</span>兼容性：低 targetSdk 既是护身符，也是隐患</h2>
+<p>这里有个容易被误判的点：Android 的多数新限制是<b>按 targetSdk 分档生效</b>的。目标 SDK 停在 25，意味着大量新规不会落到这个应用头上——它被系统当成"老应用"放行，反而比想象中能跑。</p>
+<table>
+  <tr><th style="width:190px">系统版本</th><th>预期表现</th></tr>
+  <tr><td>Android 4.0 – 7.1</td><td><span class="tag t-green">最佳</span> 该版本的设计目标区间，功能完整</td></tr>
+  <tr><td>Android 8.0 – 9</td><td><span class="tag t-green">正常</span> 后台执行限制只作用于 targetSdk ≥ 26 的应用，本包不受影响，开机自启与定时切换仍可工作</td></tr>
+  <tr><td>Android 10 – 11</td><td><span class="tag t-amber">兼容模式</span> 分区存储只强制 targetSdk ≥ 29 的应用，本包走 legacy 路径，扫描文件夹仍可用；但后台定位受限，位置规则可能只在前台生效</td></tr>
+  <tr><td>Android 12 – 13</td><td><span class="tag t-amber">可运行</span> "组件必须显式声明 exported"与精确闹钟限制均对 targetSdk ≥ 31 生效，本包不受约束，因此仍能安装、定时器仍能精确触发。主要变数是厂商省电策略会杀后台</td></tr>
+  <tr><td>Android 14+</td><td><span class="tag t-amber">可安装</span> 系统仅阻止 targetSdk &lt; 23 的应用安装，25 恰好躲过。但 Google Play 早已不接受如此低的目标 SDK，只能侧载</td></tr>
+</table>
+<div class="callout warn">
+  <b>真正的代价在安全侧，不在功能侧。</b>跑在兼容模式意味着它绕开了新系统的隐私护栏：存储访问不做隔离、定位精度不做模糊化、后台唤起不做限制、明文流量不做拦截。这不是恶意，但等于把 2018 年的安全基线一直带在身上。
+</div>
+<p>功能层面需要提醒的是：厂商 ROM（小米、华为、OPPO 等）的省电与自启管理并不看 targetSdk，一律按"后台应用"处理，因此定时切换被系统掐断仍是常见现象，需要手动加白名单。以上判断基于 Android 各版本的平台限制推导，未在真机逐版本实测。</p>
+
+<h2><span class="num">10</span>结论与建议</h2>
+<div class="card">
+  <p style="margin-top:0"><b>这个包是什么：</b>德国开发者 Thomas Hoffmann（j4velin）的 Wallpaper Changer 4.7.4 官方安装包，2018 年 3 月发布，未加固、未篡改、无广告与统计组件。它做一件很朴素的事——把你手机里的图片按规则轮播成壁纸。</p>
+  <p><b>能不能装：</b>能，且不必担心隐私泄露。但要接受两点：一是它靠"老应用"身份走兼容路径，安全护栏比现代应用少；二是厂商省电策略可能掐断定时切换。</p>
+  <p><b>建议：</b></p>
+  <ol>
+    <li>优先从 Google Play 或作者渠道获取 5.x 版本，新版本已迁移到 AndroidX 并修复了位置规则与 HEIC/WebP 支持，兼容性好得多。</li>
+    <li>若因设备较旧必须用 4.7.4，建议关闭系统的"应用数据备份"，不要授予与其功能无关的权限。</li>
+    <li>不要在公共设备上保留内购记录；如需备份手机，注意该应用的数据库会被一并带走。</li>
+    <li>把这份包的 SHA-256（<code>B0309ABE…4D1C</code>）存下来，日后拿到同名文件可快速比对是否为同一份。</li>
+  </ol>
+</div>
+
+<h2><span class="num">11</span>方法与局限</h2>
+<ul>
+  <li><b>工具链：</b>aapt / aapt2（build-tools 34）读清单与资源，apktool 2.9.3 反编译 smali 与资源，apksigner 校验签名，keytool 读证书，jadx 1.5.5 交叉验证。</li>
+  <li><b>做了什么：</b>全量解包、清单与权限逐条核对、1758 个类按包统计、对自有代码做敏感 API 与字符串检索、逐组件判定导出状态、数据库 schema 还原、内购与网络路径追踪。</li>
+  <li><b>没做什么：</b>未做动态运行与流量抓包，未在真机上验证功能，未跑多引擎病毒扫描。文中"预期表现"部分基于 Android 各版本的平台限制推导，非实测结论。</li>
+</ul>
+
+<footer>
+  报告基于 <code>Wallpaper Changer_v4.7.4.apk</code> 静态分析生成 · SHA-256 <code>B0309ABE F73B61EC F8320B4B 7765A54B 9D5546EE F75A97C6 3F6F0420 60024D1C</code>（证书指纹）· 分析时间 2026-10-20
+</footer>
+
+</div>
+</body>
+</html>

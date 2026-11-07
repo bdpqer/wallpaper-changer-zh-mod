@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textColor="#ffffffff" android:gravity="center_vertical" android:id="@id/permissionwarning" android:background="#ffff6600" android:padding="5.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/location_permission_warning" android:drawableLeft="@drawable/ic_error" android:drawablePadding="10.0dip" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+    <android.support.v7.widget.RecyclerView android:id="@id/changes" android:paddingLeft="15.0dip" android:paddingRight="15.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/permissionwarning" android:requiresFadingEdge="vertical" />
+    <android.support.design.widget.FloatingActionButton android:id="@id/fab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="40.0dip" android:src="@drawable/ic_add" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" />
+</RelativeLayout>

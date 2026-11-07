@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/lay" android:padding="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RadioGroup android:id="@id/actionrg" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <RadioButton android:textSize="18.0sp" android:id="@id/next" android:padding="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:checked="true" android:text="@string/next_wallpaper" />
+        <RadioButton android:textSize="18.0sp" android:id="@id/album" android:padding="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/next_album" />
+        <RadioButton android:textSize="18.0sp" android:id="@id/switchablum" android:padding="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/switch_album" />
+        <Spinner android:id="@id/albumspinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" />
+        <RadioButton android:textSize="18.0sp" android:id="@id/selectalbum" android:padding="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/select_album" />
+        <RadioButton android:textSize="18.0sp" android:id="@id/select" android:padding="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/select_wallpaper" />
+        <RadioButton android:textSize="18.0sp" android:id="@id/open" android:padding="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/open_current" />
+        <RadioButton android:textSize="18.0sp" android:id="@id/pause" android:padding="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:text="@string/pause_resume_rotation" />
+    </RadioGroup>
+    <Button android:layout_gravity="center_horizontal" android:id="@id/save" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/save" />
+</LinearLayout>
